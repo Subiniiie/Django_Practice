@@ -8,6 +8,9 @@
   <a href=" {% url "articles:dinner" %}">dinner</a>
   <a href="{% url "articles:search" %}">search</a>
   <a href="{% url "articles:throw" %}">throw</a>
+  <a href="{% url "articles:new" %}">
+    <p>[NEW]</p>
+  </a>
   {% for article in articles %}
     <p>글 번호: {{ article.pk }}</p>
     <a href="{% url "articles:detail" article.pk%}">
