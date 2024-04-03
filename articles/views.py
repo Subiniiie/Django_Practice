@@ -57,3 +57,14 @@ def detail(request, pk):
 
 def new(request):
     return render(request, 'articles/new.html')
+
+def create(request):
+    # new.html에서 form action="articles:create"에 의해
+    # urls에서 create로 가서 create view함수로 옴
+    # request 안에 요청된 데이터들이 들어있음
+    title = request.GET.get('title')
+    content = request.GET.get('content')
+    # DB에 저장
+    article = Article(title=title, content=content)
+    article.save()
+    return render(request, 'articles/create.html')
