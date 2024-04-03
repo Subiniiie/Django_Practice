@@ -1,10 +1,13 @@
 from django.shortcuts import render
+from .models import Article
 import random
 
 # Create your views here.
 def index(request):
+    articles = Article.objects.all()
     context = {
         'name': 'Jane',
+        'articles': articles,
     }
     return render(request, 'articles/index.html', context)
 
