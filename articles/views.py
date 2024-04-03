@@ -47,8 +47,9 @@ def greeting(request, name):
     return render(request, 'articles/greeting.html', context)
 
 
-def detail(request, num):
+def detail(request, pk):
+    article = Article.objects.get(pk=pk)
     context = {
-        'num': num,
+        'article': article,
     }
     return render(request, 'articles/detail.html', context)

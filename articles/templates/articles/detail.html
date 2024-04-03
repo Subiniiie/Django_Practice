@@ -2,5 +2,11 @@
 
 {% block content %}
     <h1>Detail</h1>
-    <h3>{{ num }}번 글입니다.</h3>
+    <h3>{{ article.pk }}번째 글</h3>
+    <p>제목: {{ article.title }}</p>
+    <p>내용: {{ article.content }}</p>
+    <p>작성일: {{ article.created_at }}</p>
+    <p>수정일: {{ article.updated_at }}</p>
+    <hr>
+    <a href="{% url "articles:index" %}">[BACK]</a>
 {% endblock content %}
