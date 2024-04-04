@@ -2,26 +2,34 @@
 {% load static %}
 
 {% block content %}
-  <a href=" {% url "accounts:login" %}">Login</a>
-  <form action=" {% url "accounts:logout" %}" method="POST">
-    {% csrf_token %}
-    <input type="submit" value="로그아웃">
-  </form>
-  <a href="{% url "accounts:signup" %}">[회원가입]</a>
-  <a href=" {% url "accounts:update" %}">회원정보수정</a>
-  <h1>Hello, {{ user.username }}!</h1>
-  {% comment %} 
-  {% url "app_name:name" %}
-  {% endcomment %}
-  <a href=" {% url "articles:dinner" %}">dinner</a>
-  <a href="{% url "articles:search" %}">search</a>
-  <a href="{% url "articles:throw" %}">throw</a>
-  <a href="{% url "articles:create" %}">
-    <p>[NEW]</p>
-  </a>
-  <hr>
+{% if request.user.is_authenticated %}
+<form action=" {% url "accounts:logout" %}" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="로그아웃">
+</form>
+<a href=" {% url "accounts:update" %}">회원정보수정</a>
+<form action=" {% url "accounts:delete" %}" method="POST">
+  {% csrf_token %}
+  <input type="submit" value="회원탈퇴">
+</form>
+<h1>Hello, {{ user.username }}!</h1>
+{% comment %} 
+{% url "app_name:name" %}
+{% endcomment %}
+<a href=" {% url "articles:dinner" %}">dinner</a>
+<a href="{% url "articles:search" %}">search</a>
+<a href="{% url "articles:throw" %}">throw</a>
+<a href="{% url "articles:create" %}">
+  <p>[NEW]</p>
+</a>
+<hr>
+{% else %}
+<a href=" {% url "accounts:login" %}">Login</a>
+<a href="{% url "accounts:signup" %}">[회원가입]</a>
+{% endif %}
   <img src="{% static "sample_01.jpg" %}" alt="img">
   <img src="{% static "sample_02.jpg" %}" alt="img">
+  <hr>
   {% for article in articles %}
     <p>글 번호: {{ article.pk }}</p>
     <a href="{% url "articles:detail" article.pk%}">
@@ -30,9 +38,4 @@
     <p>글 내용: {{ article.content }}</p>
     <hr>
   {% endfor %}
-  <hr>
-  <form action=" {% url "accounts:delete" %}" method="POST">
-    {% csrf_token %}
-    <input type="submit" value="회원탈퇴">
-  </form>
 {% endblock content %}
