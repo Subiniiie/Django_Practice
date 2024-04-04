@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Article
 import random
 
@@ -57,7 +57,7 @@ def detail(request, pk):
 
 def new(request):
     return render(request, 'articles/new.html')
-
+'''
 def create(request):
     # new.html에서 form action="articles:create"에 의해
     # urls에서 create로 가서 create view함수로 옴
@@ -68,3 +68,12 @@ def create(request):
     article = Article(title=title, content=content)
     article.save()
     return render(request, 'articles/create.html')
+'''
+
+def create(request):
+    title = request.GET.get('title')
+    content = request.GET.get('content')
+    article = Article(title=title, content=content)
+    article.save()
+    # url detail에 article.pk를 보냄
+    return redirect('articles:detail', article.pk)
