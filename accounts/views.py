@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 
 # Create your views here.
@@ -42,3 +42,19 @@ def signup(request):
 def delete(request):
     request.user.delete()
     return redirect('articles:index')
+
+
+def update(request):
+    if request.method == 'POST':
+        # 기존에 있던 데이터를 '수정'하는 거니까
+        # instance 필요
+        form = CustomUserChangeForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('articles:index')
+    else :
+        form = CustomUserChangeForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'accounts/update.html', context)
