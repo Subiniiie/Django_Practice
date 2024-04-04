@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from .forms import CustomUserCreationForm, CustomUserChangeForm
@@ -53,8 +53,15 @@ def update(request):
             form.save()
             return redirect('articles:index')
     else :
-        form = CustomUserChangeForm()
+        form = CustomUserChangeForm(instance=request.user)
     context = {
         'form': form,
     }
     return render(request, 'accounts/update.html', context)
+
+
+# def change_password(request, user_pk):
+#     if request.method == 'POST':
+#         pass
+#     else :
+#         form = PasswordChangeForm(request.user)
