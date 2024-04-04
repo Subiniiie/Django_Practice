@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Article
+from .models import Article, Comment
 from .forms import ArticleForm, CommentForm
 import random
 
@@ -191,3 +191,9 @@ def comments_create(request, pk):
         'comment_form': comment_form,
     }
     return render(request, 'articles/detail.html', context)
+
+
+def comments_delete(request, article_pk, comment_pk):
+    comment = Comment.objects.get(pk=comment_pk)
+    comment.delete()
+    return redirect('articles:detail', article_pk)
