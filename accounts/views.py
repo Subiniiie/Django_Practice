@@ -50,6 +50,7 @@ def signup(request):
 @login_required
 def delete(request):
     request.user.delete()
+    auth_logout(request)
     return redirect('articles:index')
 
 
