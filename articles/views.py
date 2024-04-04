@@ -99,7 +99,7 @@ def create(request):
 def create(request):
     # 만약 데이터가 요청되었다면(들어왔다면)
     if request.method == 'POST':
-        form = ArticleForm(request.POST)
+        form = ArticleForm(request.POST, request.FILES)
         # 만약 데이터가 유효하다면
         if form.is_valid():
             article = form.save()
@@ -161,7 +161,7 @@ def update(request, pk):
 def update(request, pk):
     article = Article.objects.get(pk=pk)
     if request.method == 'POST':
-        form = ArticleForm(request.POST, instance=article)
+        form = ArticleForm(request.POST, request.FILES, instance=article)
         if form.is_valid():
             form.save()
             return redirect('articles:detail', article.pk)

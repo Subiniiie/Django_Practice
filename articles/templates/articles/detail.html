@@ -4,6 +4,9 @@
     <h1>Detail</h1>
     <h3>{{ article.pk }}번째 글</h3>
     <p>제목: {{ article.title }}</p>
+    {% if article.image %}
+        <img src="{{ article.image.url}}" alt="img">
+    {% endif %}
     <p>내용: {{ article.content }}</p>
     <p>작성일: {{ article.created_at }}</p>
     <p>수정일: {{ article.updated_at }}</p>
