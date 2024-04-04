@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Article
+from .forms import ArticleForm
 import random
 
 # Create your views here.
@@ -55,9 +56,11 @@ def detail(request, pk):
     return render(request, 'articles/detail.html', context)
 
 
+'''
 def new(request):
     return render(request, 'articles/new.html')
-'''
+
+
 def create(request):
     # new.html에서 form action="articles:create"에 의해
     # urls에서 create로 가서 create view함수로 옴
@@ -70,13 +73,26 @@ def create(request):
     return render(request, 'articles/create.html')
 '''
 
+# ModelForm class 사용
+def new(request):
+    form = ArticleForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'articles/new.html', context)
+
 def create(request):
-    title = request.GET.get('title')
-    content = request.GET.get('content')
-    article = Article(title=title, content=content)
-    article.save()
-    # url detail에 article.pk를 보냄
-    return redirect('articles:detail', article.pk)
+    form = ArticleForm(request.POST)
+    # 유효성 검사 / 데이터가 유효한가?
+    if form.is_valid():
+        article = form.save()
+        # url detail에 article.pk를 보냄    
+        return redirect('articles:detail', article.pk)
+    # 유효하지 않다면(빈 값이 있으면)
+    context = {
+        'form': form,
+    }
+    return render(request, 'articles/new.html', context)
 
 
 def delete(request, pk):
@@ -86,13 +102,21 @@ def delete(request, pk):
 
 
 def edit(request, pk):
+    # 어느 게시물을 살펴볼 것인가
     article = Article.objects.get(pk=pk)
+    form = ArticleForm(instance=article)
+    # 게시물을 수정하는 거니까 무조건 유효할거임
+    # 어떤 게시물을 수정할건지 알아야 하니까
+    # article도 보냄
+    # edit.html에서 article.pk 사용
     context = {
         'article': article,
+        'form': form,
     }
     return render(request, 'articles/edit.html', context)
 
 
+'''
 def update(request, pk):
     article = Article.objects.get(pk=pk)
     # 기존값(article.title)을 
@@ -101,4 +125,18 @@ def update(request, pk):
     article.content = request.POST.get('content')
     article.save()
     return redirect('articles:detail', article.pk)
+'''
+
+# ModelForm 클래스 사용
+def update(request, pk):
+    article = Article.objects.get(pk=pk)
+    form = ArticleForm(request.POST, instance=article)
+    if form.is_vaild:
+        form.save()
+        return redirect('articles:detail', article.pk)
+    context = {
+        'article': article,
+        'form': form,
+    }
+    return render(request, 'articles/detail.html', context)
 
