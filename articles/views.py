@@ -77,3 +77,8 @@ def create(request):
     article.save()
     # url detail에 article.pk를 보냄
     return redirect('articles:detail', article.pk)
+
+def delete(request, pk):
+    article = Article.objects.get(pk=pk)
+    article.delete()
+    return redirect('articles:index')

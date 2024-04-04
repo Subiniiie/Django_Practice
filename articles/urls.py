@@ -14,4 +14,5 @@ urlpatterns = [
     path('hello/<str:name>/', views.greeting, name='greeting'),
     path('new/', views.new, name='new'),
     path('create/', views.create, name='create'),
+    path('<int:pk>/delete/', views.delete, name='delete'),
 ]
