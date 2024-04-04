@@ -106,7 +106,9 @@ def create(request):
         form = ArticleForm(request.POST, request.FILES)
         # 만약 데이터가 유효하다면
         if form.is_valid():
-            article = form.save()
+            article = form.save(commit=False)
+            article.user = request.user
+            article.save()
             return redirect('articles:detail', article.pk)
     else :
         # 데이터가 없음 / 인스턴스만 생성
@@ -118,7 +120,8 @@ def create(request):
 
 def delete(request, pk):
     article = Article.objects.get(pk=pk)
-    article.delete()
+    if request.user == article.user:
+        article.delete()
     return redirect('articles:index')
 
 
@@ -164,18 +167,16 @@ def update(request, pk):
 
 def update(request, pk):
     article = Article.objects.get(pk=pk)
-    if request.method == 'POST':
-        form = ArticleForm(request.POST, request.FILES, instance=article)
-        if form.is_valid():
-            form.save()
-            return redirect('articles:detail', article.pk)
-    else :
-        form = ArticleForm()
-    context = {
-        'article': article,
-        'form': form,
-    }
-    return render(request, 'articles/update.html', context)
+    if request.user == article.user:
+        if request.method == 'POST':
+            form = ArticleForm(request.POST, request.FILES, instance=article)
+            if form.is_valid():
+                form.save()
+                return redirect('articles:detail', article.pk)
+        else:
+            form = ArticleForm(instance=article)
+    else:
+        return redirect('articles:index')
 
 
 def comments_create(request, pk):
