@@ -71,8 +71,8 @@ def create(request):
     article = Article(title=title, content=content)
     article.save()
     return render(request, 'articles/create.html')
-'''
 
+    
 # ModelForm class 사용
 def new(request):
     form = ArticleForm()
@@ -93,7 +93,24 @@ def create(request):
         'form': form,
     }
     return render(request, 'articles/new.html', context)
+'''
 
+
+def create(request):
+    # 만약 데이터가 요청되었다면(들어왔다면)
+    if request.method == 'POST':
+        form = ArticleForm(request.POST)
+        # 만약 데이터가 유효하다면
+        if form.is_valid():
+            article = form.save()
+            return redirect('articles:detail', article.pk)
+    else :
+        # 데이터가 없음 / 인스턴스만 생성
+        form = ArticleForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'articles/create.html', context)
 
 def delete(request, pk):
     article = Article.objects.get(pk=pk)
@@ -101,6 +118,7 @@ def delete(request, pk):
     return redirect('articles:index')
 
 
+'''
 def edit(request, pk):
     # 어느 게시물을 살펴볼 것인가
     article = Article.objects.get(pk=pk)
@@ -116,7 +134,6 @@ def edit(request, pk):
     return render(request, 'articles/edit.html', context)
 
 
-'''
 def update(request, pk):
     article = Article.objects.get(pk=pk)
     # 기존값(article.title)을 
@@ -125,7 +142,6 @@ def update(request, pk):
     article.content = request.POST.get('content')
     article.save()
     return redirect('articles:detail', article.pk)
-'''
 
 # ModelForm 클래스 사용
 def update(request, pk):
@@ -139,4 +155,20 @@ def update(request, pk):
         'form': form,
     }
     return render(request, 'articles/detail.html', context)
+'''
 
+
+def update(request, pk):
+    article = Article.objects.get(pk=pk)
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, instance=article)
+        if form.is_valid():
+            form.save()
+            return redirect('articles:detail', article.pk)
+    else :
+        form = ArticleForm()
+    context = {
+        'article': article,
+        'form': form,
+    }
+    return render(request, 'articles/update.html', context)

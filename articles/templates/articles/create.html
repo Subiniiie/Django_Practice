@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h3>게시글이 작성되었습니다.</h3>
+<h1>NEW</h1>
+<form action="{% url "articles:create" %}" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit">
+</form>
+<hr>
+<a href="{% url "articles:index" %}">[BACK]</a>
+
 {% endblock content %}

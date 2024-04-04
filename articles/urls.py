@@ -12,9 +12,7 @@ urlpatterns = [
     path('catch/', views.catch, name='catch'),
     path('<int:num>/', views.detail, name='detail'),
     path('hello/<str:name>/', views.greeting, name='greeting'),
-    path('new/', views.new, name='new'),
     path('create/', views.create, name='create'),
     path('<int:pk>/delete/', views.delete, name='delete'),
-    path('<int:pk>/edit/', views.edit, name='edit'),
     path('<int:pk>/update/', views.update, name='update'),
 ]
