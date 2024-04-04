@@ -22,5 +22,10 @@
         {{ comment_form}}
         <input type="submit">
     </form>
+    <ul>
+        {% for comment in comments  %}
+            <li>{{ comment.content }}</li>
+        {% endfor %}
+    </ul>
     <a href="{% url "articles:index" %}">[BACK]</a>
 {% endblock content %}
