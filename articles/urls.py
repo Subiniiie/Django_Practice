@@ -10,9 +10,10 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('throw/', views.throw, name='throw'),
     path('catch/', views.catch, name='catch'),
-    path('<int:num>/', views.detail, name='detail'),
+    path('<int:pk>/', views.detail, name='detail'),
     path('hello/<str:name>/', views.greeting, name='greeting'),
     path('create/', views.create, name='create'),
     path('<int:pk>/delete/', views.delete, name='delete'),
     path('<int:pk>/update/', views.update, name='update'),
+    path('<int:pk>/comments/', views.comments_create, name='comments_create'),
 ]
