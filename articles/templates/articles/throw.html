@@ -2,7 +2,8 @@
 
 {% block content %}
 <h1>Throw</h1>
-<form action="/catch/" method="GET">
+<form action=" {% url "articles:catch" %}" method="POST">
+    {% csrf_token %}
     <input type="text" name="message" id="message">
     <input type="submit">
 </form>

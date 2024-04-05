@@ -20,7 +20,6 @@
             <input type="submit" value="DELETE">
         </form>
         {% endif %}
-    <hr>
     <form action=" {% url "articles:comments_create" article.pk%}" method="POST">
         {% csrf_token %}
         {{ comment_form}}
@@ -31,9 +30,8 @@
         {% for comment in comments  %}
             <li>
                 {{ comment.user}} : {{ comment.content }}
-                {{ comment.content }}
                 {% if request.user == comment.user %}
-                    <form action=" {% url "articles:comments_delete" article.pk comment.pk%}" method="POST">
+                    <form action=" {% url "articles:comments_delete" article.pk comment.pk%}" method="POST" style="display: inline">
                         {% csrf_token %}
                         <input type="submit" value="DELETE">
                     </form>
