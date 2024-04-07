@@ -22,20 +22,16 @@ def occur(request):
     matplotlib.rcParams['font.family'] = 'Malgun Gothic'
     csv_path = 'cyber_crimes.csv'
     df = pd.read_csv(csv_path, encoding = 'euc-kr')
-    occur_df = df.iloc[1::2]
+    occur_df = df.iloc[2::2]
     occur_df = occur_df.drop(columns = ['구분'])
     
     x = occur_df['연도']
     y = occur_df.columns[1:]
     
-
-
     fig, ax = plt.subplots(figsize=(20, 16))
     for column in y:
         ax.plot(x, occur_df[column], label=column)
-    ax.legend()
-    
- 
+    ax.legend(loc='upper left')
     
     buffer = BytesIO()
     fig.savefig(buffer, format='png')
@@ -48,3 +44,13 @@ def occur(request):
     }
     plt.close(fig)
     return render(request, 'pages/occur.html', context)
+
+
+def arrest(request):
+    font_path = 'C:\Windows\Fonts\malgun.ttf'
+    matplotlib.rcParms['font.family'] = 'Malgun Gothic'
+    csv_path = 'cyber_crimes.csv'
+    df = pd.read_csv(csv_path, encoding = 'enc-kr')
+    arrest_df = df.iloc[2::2]
+    arrest_df = df
+    pass
