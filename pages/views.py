@@ -48,9 +48,28 @@ def occur(request):
 
 def arrest(request):
     font_path = 'C:\Windows\Fonts\malgun.ttf'
-    matplotlib.rcParms['font.family'] = 'Malgun Gothic'
+    matplotlib.rcParams['font.family'] = 'Malgun Gothic'
     csv_path = 'cyber_crimes.csv'
-    df = pd.read_csv(csv_path, encoding = 'enc-kr')
-    arrest_df = df.iloc[2::2]
-    arrest_df = df
-    pass
+    df = pd.read_csv(csv_path, encoding = 'euc-kr')
+    arrest_df = df.iloc[1::2]
+    arrest_df = arrest_df.drop(columns= ['구분'])
+    
+    x = arrest_df['연도']
+    y = arrest_df.columns[1:]
+    
+    fig, ax = plt.subplots(figsize=(20, 16))
+    for column in y :
+        ax.plot(x, arrest_df[column], label=column)
+    ax.legend()
+    
+    buffer = BytesIO()
+    fig.savefig(buffer, format='png')
+    buffer.seek(0)
+    img_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8').replace('\n', '')
+    buffer.close()
+    context = {
+        'image': f'data:image/png;base64, {img_base64}',
+        'arrest_df': arrest_df,
+    }
+    plt.close(fig)
+    return render(request, 'pages/arrest.html', context)
