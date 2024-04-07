@@ -73,3 +73,4 @@ def arrest(request):
     }
     plt.close(fig)
     return render(request, 'pages/arrest.html', context)
+    
